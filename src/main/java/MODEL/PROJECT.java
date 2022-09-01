@@ -19,7 +19,9 @@ public class PROJECT {
         this.CREATED_AT = CREATED_AT;
         this.UPDATED_AT = UPDATE_AT;
     }
-
+     public PROJECT(){
+        this.CREATED_AT = new Date();
+     }    
     public int getID() {
         return ID;
     }
