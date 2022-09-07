@@ -10,10 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TASKCONTROLLER {
 
     public void Save(TASK task) {
-        String sql = "INSERT INTO tasks (ID_PROJECT, NAME, DESCRIPTION, COMPLETED, NOTES, DEALINE, "
+        String sql = "INSERT INTO tasks (ID_PROJECT, NAME, DESCRIPTION, COMPLETED, NOTES, DEADLINE, "
                 + "CREATED_AT, UPDATE_AT) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
        
         Connection connection = null;
@@ -37,7 +38,7 @@ public class TASKCONTROLLER {
             statement.execute();
 
           //tratando erros/excessões  
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("erro ao salvar a tarefa " + ex.getMessage(), ex);
 
         } finally {
@@ -78,7 +79,7 @@ public class TASKCONTROLLER {
             statement.execute();
             
             //tratando erros/excessões
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
               throw new RuntimeException("erro ao atualizar a tarefa " + ex.getMessage(), ex);
 
         } finally {
@@ -105,7 +106,7 @@ public class TASKCONTROLLER {
             statement.execute();
             
          //tratando erros//excessões   
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("erro ao deletar tarefa" + ex.getMessage(), ex);
         } finally {
             //finalizando a conexão com o banco 
@@ -150,7 +151,7 @@ public class TASKCONTROLLER {
                 tasks.add(task);
             }
          //tratando erros/excessões   
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("erro ao inserir tarefa" + ex.getMessage(), ex);
         }finally{
             //finalizando a conexão com  o banco 

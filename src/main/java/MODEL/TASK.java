@@ -29,6 +29,9 @@ public class TASK {
     
     public TASK(){
         this.CREATED_AT = new Date();
+        this.UPDATED_AT = new Date();
+        this.DEADLINE = new Date();
+        
         
     }
     

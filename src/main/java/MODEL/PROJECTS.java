@@ -4,7 +4,7 @@ package MODEL;
 import java.util.Date;
 
 
-public class PROJECT {
+public class PROJECTS {
     
     private int ID;
     private String NAME;
@@ -12,16 +12,31 @@ public class PROJECT {
     private Date CREATED_AT;
     private Date UPDATED_AT;
 
-    public PROJECT(int ID, String NAME, String DESCRIPTION, Date CREATED_AT, Date UPDATE_AT) {
+    public PROJECTS(int ID, String NAME, String DESCRIPTION, Date CREATED_AT, Date UPDATE_AT) {
         this.ID = ID;
         this.NAME = NAME;
         this.DESCRIPTION = DESCRIPTION;
         this.CREATED_AT = CREATED_AT;
         this.UPDATED_AT = UPDATE_AT;
-    }
-     public PROJECT(){
+    
+        
+       
+            
+        }
+
+   
+     public PROJECTS(){
         this.CREATED_AT = new Date();
-     }    
+        this.UPDATED_AT = new Date();
+     }
+     
+       //public Project(){
+        //throw new UnsupportedOperationException("not suported");   
+     
+     public void Projects(){
+     throw new UnsupportedOperationException("not suported");
+     }
+     
     public int getID() {
         return ID;
     }
@@ -39,6 +54,7 @@ public class PROJECT {
     }
 
     public Date getUPDATE_AT() {
+       
         return UPDATED_AT;
     }
 
@@ -64,7 +80,7 @@ public class PROJECT {
 
     @Override
     public String toString() {
-        return "PROJECT{" + "ID=" + ID + ", NAME=" + NAME + ", DESCRIPTION=" + DESCRIPTION + ", CREATED_AT=" + CREATED_AT + ", UPDATE_AT=" + UPDATED_AT + '}';
+    return this.NAME;
     }
     
     
