@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
+
 public class CONNECTIONFACTORY {
 
     public static final String DRIVER = "com.mysql.jdbc.Driver";
-    public static final String URL = "jdbc:mysql://localhost:3306/task app";
+    public static final String URL = "jdbc:mysql://localhost:3306/TASK APP";
     public static final String USER = "root";
     public static final String PASS = "";
 

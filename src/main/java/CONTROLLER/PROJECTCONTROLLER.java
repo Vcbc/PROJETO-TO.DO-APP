@@ -14,8 +14,9 @@ public class PROJECTCONTROLLER {
 
     public void Save(PROJECTS projects) {
 
-        String sql = "INSERT INTO projects ( NAME, DESCRIPTION, "
-                + "CREATED_AT, UPDATE_AT) VALUES (?, ?, ?, ?)";
+        //String sql = "INSERT INTO NAME, DESCRIPTION, CREATED_AT, UPDATE_AT; VALUES (?, ?, ?, ?)";
+                                 //tirar/colocar aspas
+        String sql = "INSERT INTO projects (`NAME`, `DESCRIPTION`, `CREATED_AT`, `UPDATE_AT`) VALUES (?, ?, ?, ?)";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -67,7 +68,7 @@ public class PROJECTCONTROLLER {
     }
 
     public void RemoveByID(int PROJECT_ID) throws SQLException {
-        String SQL = "DELETE FROM projects WHERE id = ? ";
+        String SQL = "DELETE FROM projects WHERE ID = ? ";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -92,7 +93,8 @@ public class PROJECTCONTROLLER {
 
     public List<PROJECTS> getall() {
 
-        String sql = "SELECT * FROM projects WHERE PROJECT_ID = ?";
+        //String sql = "SELECT * FROM projects WHERE PROJECT_ID = ?";
+        String sql = "SELECT * FROM projects";
 
        
 

@@ -21,7 +21,7 @@ public class Main {
         
         task.setNAME("projeto teste");
         task.setDESCRIPTION("descrição");
-        taskcontroller.Save(task);*/
+        taskcontroller.Save(task);
         
         PROJECTCONTROLLER projectcontroller = new PROJECTCONTROLLER();
         
@@ -37,6 +37,7 @@ public class Main {
         List<PROJECTS> projects = projectcontroller.getall();
         System.out.println("total " + projects.size());
         
-     }
+     }*/
     
+}
 }
