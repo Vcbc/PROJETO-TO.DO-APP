@@ -10,11 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TASKCONTROLLER {
 
-    public void Save(TASK task) {
-        String sql = "INSERT INTO tasks (ID_PROJECT, NAME, DESCRIPTION, COMPLETED, NOTES, DEALINE, "
-                + "CREATED_AT, UPDATE_AT) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public void Save(TASK task) {//tirar/colocar aspas
+        String sql = "INSERT INTO tasks (`ID_PROJECT`, `NAME´, `DESCRIPTION´, `COMPLETED´, `NOTES´, `DEADLINE´, "
+                + "`CREATED_AT´, `UPDATE_AT´) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
        
         Connection connection = null;
         PreparedStatement statement = null;
@@ -37,7 +38,7 @@ public class TASKCONTROLLER {
             statement.execute();
 
           //tratando erros/excessões  
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("erro ao salvar a tarefa " + ex.getMessage(), ex);
 
         } finally {
@@ -49,10 +50,10 @@ public class TASKCONTROLLER {
     }
 
     public void Update(TASK task) {
-        String sql = "UPDATE tasks SET"
-                + "ID_PROJECT = ?, NAME = ?, DESCRIPTION = ?, NOTES = ?, DEADLINE = ?, COMPLETED = ?, CREATED_AT = ?,"
-                + "UPDATE_AT = ?,"
-                + "WHERE ID = ?";
+        String sql = "UPDATE tasks SET "
+                + " ID_PROJECT = ?, NAME = ?, DESCRIPTION = ?, NOTES = ?, DEADLINE = ?, COMPLETED = ?, CREATED_AT = ?, "
+                + "UPDATE_AT = ?, "
+                + "WHERE ID = ? ";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -78,7 +79,7 @@ public class TASKCONTROLLER {
             statement.execute();
             
             //tratando erros/excessões
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
               throw new RuntimeException("erro ao atualizar a tarefa " + ex.getMessage(), ex);
 
         } finally {
@@ -89,8 +90,8 @@ public class TASKCONTROLLER {
 
     }
 
-    public void removeByID(int TASK_ID) throws SQLException {
-        String SQL = "DELETE FROM tasks WHRE id = ?";
+    public void removeByID(int TASK_ID) {
+        String SQL = "DELETE FROM tasks WHERE ID = ?";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -105,7 +106,7 @@ public class TASKCONTROLLER {
             statement.execute();
             
          //tratando erros//excessões   
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("erro ao deletar tarefa" + ex.getMessage(), ex);
         } finally {
             //finalizando a conexão com o banco 
@@ -145,12 +146,12 @@ public class TASKCONTROLLER {
                 task.setIS_COMPLETED(resultSet.getBoolean("COMPLETED"));
                 task.setDEADLINE(resultSet.getDate("DEADLINE"));
                 task.setCREATED_AT(resultSet.getDate("CREATED_AT"));
-                task.setUPDATED_AT(resultSet.getDate("UPDATED_AT"));
+                task.setUPDATED_AT(resultSet.getDate("UPDATE_AT"));
                 
                 tasks.add(task);
             }
          //tratando erros/excessões   
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("erro ao inserir tarefa" + ex.getMessage(), ex);
         }finally{
             //finalizando a conexão com  o banco 
