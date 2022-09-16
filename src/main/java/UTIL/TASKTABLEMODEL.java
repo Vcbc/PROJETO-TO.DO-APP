@@ -71,7 +71,7 @@ public class TASKTABLEMODEL extends AbstractTableModel {
                 return "";*/
 
             default:
-                return "Dados não encontrados";
+                return "Dados não encontrados" ;
 
         }
     }
