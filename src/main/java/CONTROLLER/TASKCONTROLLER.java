@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Timestamp;
 
 public class TASKCONTROLLER {
 
     public void Save(TASK task) {//tirar/colocar aspas
-        String sql = "INSERT INTO tasks (`ID_PROJECT`, `NAME´, `DESCRIPTION´, `COMPLETED´, `NOTES´, `DEADLINE´, "
-                + "`CREATED_AT´, `UPDATE_AT´) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tasks (NAME, DESCRIPTION, COMPLETED, NOTES, DEADLINE, "
+                + "CREATED_AT, UPDATE_AT, ID_PROJECT) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
        
         Connection connection = null;
         PreparedStatement statement = null;
@@ -26,14 +26,15 @@ public class TASKCONTROLLER {
             //preparando a query
             statement = connection.prepareStatement(sql);
             //setando os valores do statement
-            statement.setInt(1, task.getID_PROJECT());
-            statement.setString(2, task.getNAME());
-            statement.setString(3, task.getDESCRIPTION());
-            statement.setBoolean(4, task.isIS_COMPLETED());
-            statement.setString(5, task.getNOTES());
-            statement.setDate(6, new Date(task.getDEADLINE().getTime()));
-            statement.setDate(7, new Date(task.getCREATED_AT().getTime()));
-            statement.setDate(8, new Date(task.getUPDATED_AT().getTime()));
+            
+            statement.setString(1, task.getNAME());
+            statement.setString(2, task.getDESCRIPTION());
+            statement.setBoolean(3, task.isIS_COMPLETED());
+            statement.setString(4, task.getNOTES());
+            statement.setDate(5, new Date(task.getDEADLINE().getTime()));
+            statement.setDate(6, new Date(task.getCREATED_AT().getTime()));
+            statement.setDate(7, new Date(task.getUPDATED_AT().getTime()));
+            statement.setInt(8, task.getID_PROJECT());
             //executando a query
             statement.execute();
 
@@ -51,9 +52,9 @@ public class TASKCONTROLLER {
 
     public void Update(TASK task) {
         String sql = "UPDATE tasks SET "
-                + " ID_PROJECT = ?, NAME = ?, DESCRIPTION = ?, NOTES = ?, DEADLINE = ?, COMPLETED = ?, CREATED_AT = ?, "
+                + " ID_PROJECT = ?, NAME = ?, DESCRIPTION = ?, NOTES = ?, DEADLINE = ?, COMPLETED = ?, CREATED_AT, "
                 + "UPDATE_AT = ?, "
-                + "WHERE ID = ? ";
+                + "WHERE ID_PROJECT = ? ";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -66,15 +67,16 @@ public class TASKCONTROLLER {
             statement = connection.prepareStatement(sql);
             
             //setando os valores do statement
-            statement.setInt(1, task.getID_PROJECT());
-            statement.setString(2, task.getNAME());
-            statement.setString(3, task.getDESCRIPTION());
-            statement.setBoolean(4, task.isIS_COMPLETED());
-            statement.setString(5, task.getNOTES());
-            statement.setDate(6, new Date(task.getDEADLINE().getTime()));
-            statement.setDate(7, new Date(task.getCREATED_AT().getTime()));
-            statement.setDate(8, new Date(task.getUPDATED_AT().getTime()));
-            statement.setInt(9, task.getID());
+            
+            statement.setString(1, task.getNAME());
+            statement.setString(2, task.getDESCRIPTION());
+            statement.setBoolean(3, task.isIS_COMPLETED());
+            statement.setString(4, task.getNOTES());
+            statement.setDate(5, new Date(task.getDEADLINE().getTime()));
+            //statement.setDate(6, new Date(task.getCREATED_AT().getTime()));
+            statement.setDate(6, new Date(task.getUPDATED_AT().getTime()));
+            statement.setInt(7, task.getID());
+            statement.setInt(8, task.getID_PROJECT());
             //executando a query
             statement.execute();
             
@@ -139,7 +141,7 @@ public class TASKCONTROLLER {
             while(resultSet.next()){
                 TASK task = new TASK();
                 task.setID(resultSet.getInt("ID"));
-                task.setID_PROJECT(resultSet.getInt("ID_PROJECT"));
+                
                 task.setNAME(resultSet.getString("NAME"));
                 task.setDESCRIPTION(resultSet.getString("DESCRIPTION"));
                 task.setNOTES(resultSet.getString("NOTES"));
@@ -147,6 +149,7 @@ public class TASKCONTROLLER {
                 task.setDEADLINE(resultSet.getDate("DEADLINE"));
                 task.setCREATED_AT(resultSet.getDate("CREATED_AT"));
                 task.setUPDATED_AT(resultSet.getDate("UPDATE_AT"));
+                task.setID_PROJECT(resultSet.getInt("ID_PROJECT"));
                 
                 tasks.add(task);
             }

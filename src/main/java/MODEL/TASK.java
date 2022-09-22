@@ -25,6 +25,7 @@ public class TASK {
     this.DEADLINE = DEADLINE;
     this.CREATED_AT = CREATED_AT;
     this.UPDATED_AT = UPDATED_AT;
+    this.ID_PROJECT = ID_PROJECT;
     }
     
     public TASK(){
@@ -112,6 +113,6 @@ public class TASK {
     public String toString() {
         return "TASK{" + "ID=" + ID + ", PROJECT_ID=" + ID_PROJECT + ", NAME=" + NAME + ", DESCRIPTION=" + DESCRIPTION + ", NOTES=" + NOTES + ", IS_COMPLETED=" + IS_COMPLETED + ", DEADLINE=" + DEADLINE + ", CREATED_AT=" + CREATED_AT + ", UPDATED_AT=" + UPDATED_AT + '}';
     }
-    
+ 
     
 }

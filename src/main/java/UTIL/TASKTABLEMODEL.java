@@ -27,14 +27,10 @@ public class TASKTABLEMODEL extends AbstractTableModel {
 
     }
 
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 3;
 
-        /*if(columnIndex == 3)
-          return true;
-      
-      else 
-          return false;*/
     }
 
     @Override
@@ -58,17 +54,17 @@ public class TASKTABLEMODEL extends AbstractTableModel {
                 return tasks.get(rowIndex).getDESCRIPTION();
 
             case 2:
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 return dateFormat.format(tasks.get(rowIndex).getDEADLINE());
 
             case 3:
                 return tasks.get(rowIndex).isIS_COMPLETED();
 
-           /* case 4:
+           case 4:
                 return "";
 
             case 5:
-                return "";*/
+                return "";
 
             default:
                 return "Dados não encontrados" ;

@@ -8,6 +8,8 @@ import CONTROLLER.PROJECTCONTROLLER;
 import CONTROLLER.TASKCONTROLLER;
 import MODEL.PROJECTS;
 import MODEL.TASK;
+import UTIL.BUTTONCOLUNMCELLRENDERER;
+import UTIL.DEADLINECOLUMNCELLRENDERER;
 import UTIL.TASKTABLEMODEL;
 import java.awt.Color;
 import java.awt.Font;
@@ -30,10 +32,10 @@ public class MAINSCREEN extends javax.swing.JFrame {
 
     public MAINSCREEN() {
         initComponents();
-        decorateTableTask();
 
         initDataController();
         initComponentsModel();
+        decorateTableTask();
     }
 
     /**
@@ -341,6 +343,7 @@ public class MAINSCREEN extends javax.swing.JFrame {
         projectDialogScreen.setVisible(true);
 
         projectDialogScreen.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosed(WindowEvent e) {
                 LoadProjects();
             }
@@ -357,20 +360,19 @@ public class MAINSCREEN extends javax.swing.JFrame {
         PROJECTS projects = (PROJECTS) projectsModel.get(projectIndex);
         taskDialogScreen2.setProject(projects);
 
-        //taskDialogScreen2.setProject(null);
+        // taskDialogScreen2.setProject(null); POR CAUSA DESSA LINHA EU PERDI 1 SEMANA DE VIDA, PAAAAARABÉNS!!!!
         taskDialogScreen2.setVisible(true);
 
         taskDialogScreen2.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosed(WindowEvent e) {
                 int projectIndex = jListprojects.getSelectedIndex();
                 PROJECTS project = (PROJECTS) projectsModel.get(projectIndex);
                 LoadTasks(project.getID());
-                
-                
-            
+
             }
-            
-            });
+
+        });
 
     }//GEN-LAST:event_jLabeltasksaddMouseClicked
 
@@ -379,16 +381,30 @@ public class MAINSCREEN extends javax.swing.JFrame {
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
         TASK task = taskModel.getTasks().get(rowIndex);
         switch (columnIndex) {
-            case 3:
-                
+            case 4:
                 taskController.Update(task);
 
+                TaskDialogScreen2 taskDialogScreen = new TaskDialogScreen2(this, rootPaneCheckingEnabled);
+
+                int taskIndex = jListprojects.getSelectedIndex();
+                PROJECTS projects = (PROJECTS) projectsModel.get(taskIndex);
+                taskDialogScreen.setProject(projects);
+
+                taskDialogScreen.setVisible(true);
+
+                taskDialogScreen.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        LoadTasks(projects.getID());
+
+                    }
+                });
                 break;
-                
+
             case 5:
                 taskController.removeByID(task.getID());
                 taskModel.getTasks().remove(task);
-                
+
                 int projectIndex = jListprojects.getSelectedIndex();
                 PROJECTS project = (PROJECTS) projectsModel.get(projectIndex);
                 LoadTasks(project.getID());
@@ -464,9 +480,13 @@ public class MAINSCREEN extends javax.swing.JFrame {
         jTableTasks.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         jTableTasks.getTableHeader().setBackground(new Color(0, 153, 102));
         jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
+        //ver se vou ter que mudar o num da coluna
+        jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DEADLINECOLUMNCELLRENDERER());
 
-        jTableTasks.setAutoCreateRowSorter(true);
+        jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new BUTTONCOLUNMCELLRENDERER("pencil"));
+        jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new BUTTONCOLUNMCELLRENDERER("close"));
 
+        //jTableTasks.setAutoCreateRowSorter(true);
     }
 
     public void initDataController() {
