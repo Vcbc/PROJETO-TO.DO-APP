@@ -14,4 +14,8 @@ dependencies {
 //  https://mvnrepository.com/artifact/mysql/mysql-connector-java
      implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
 
+// https://mvnrepository.com/artifact/org.hibernate/hibernate-gradle-plugin
+implementation group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.4.20.Final'
+
+
 }

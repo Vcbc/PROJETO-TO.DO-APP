@@ -5,7 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
+/**
+ * Esta é a classe que vai fazer a conxeão com o banco de dados.
+ * @author victo
+ */
 
 public class CONNECTIONFACTORY {
 

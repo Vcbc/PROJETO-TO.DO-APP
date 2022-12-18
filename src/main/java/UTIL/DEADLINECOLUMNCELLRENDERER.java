@@ -9,6 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * Nessa classe vamos implementar a troca de cores da celula de prazo quando a tarefa
+ * estiver no prazo ou quando estiver atrasada.
+ * @author victo
+ */
 
 public class DEADLINECOLUMNCELLRENDERER extends DefaultTableCellRenderer {
     

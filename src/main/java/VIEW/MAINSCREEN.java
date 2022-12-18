@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package VIEW;
 
 import CONTROLLER.PROJECTCONTROLLER;
@@ -15,8 +11,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -24,15 +24,30 @@ import javax.swing.DefaultListModel;
  */
 public class MAINSCREEN extends javax.swing.JFrame {
 
+    /**
+     * Criando variáveis dos objetos controller
+     */
     PROJECTCONTROLLER projectController;
     TASKCONTROLLER taskController;
 
+    /**
+     * DefaultListModel serve para guardar os dados que vão ser exibidos na
+     * tela, ele se comunica com um Jlist. criação da variável taskModel que vai
+     * obter as informações do TaskTableModel
+     */
     DefaultListModel projectsModel;
     TASKTABLEMODEL taskModel;
 
+    /**
+     * Assim que a tela for inicializada, os métodos que estão dentro do
+     * MAINSCREEN irão ser executados.
+     */
     public MAINSCREEN() {
         initComponents();
 
+        /**
+         * inicializando os objetos controller
+         */
         initDataController();
         initComponentsModel();
         decorateTableTask();
@@ -337,11 +352,25 @@ public class MAINSCREEN extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * implementação do botão de adicionar projeto
+     *
+     * @param evt
+     */
     private void jLabelprojectsaddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelprojectsaddMouseClicked
-        // TODO add your handling code here:
+        /**
+         * criamos o objeto da tela de cadastro de projetos.
+         */
         ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
+        /**
+         * aqui tornamos esta tela visível.
+         */
         projectDialogScreen.setVisible(true);
 
+        /**
+         * colocamos um ouvinte nesta janela, ele ira recarregar a lista de
+         * projetos assim que o botão de adicionar projeto for pressionado.
+         */
         projectDialogScreen.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -354,13 +383,23 @@ public class MAINSCREEN extends javax.swing.JFrame {
 
     private void jLabeltasksaddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabeltasksaddMouseClicked
 
+        /**
+         * criação do objeto da tela de cadastro de tarefas
+         */
+        
         TaskDialogScreen2 taskDialogScreen2 = new TaskDialogScreen2(this, rootPaneCheckingEnabled);
 
+        
+        /**
+         * criação da variável que indica qual projeto está selecionado para
+         * adicionar neste projeto uma tarefa
+         */
         int projectIndex = jListprojects.getSelectedIndex();
+
         PROJECTS projects = (PROJECTS) projectsModel.get(projectIndex);
         taskDialogScreen2.setProject(projects);
+        
 
-        // taskDialogScreen2.setProject(null); POR CAUSA DESSA LINHA EU PERDI 1 SEMANA DE VIDA, PAAAAARABÉNS!!!!
         taskDialogScreen2.setVisible(true);
 
         taskDialogScreen2.addWindowListener(new WindowAdapter() {
@@ -377,44 +416,77 @@ public class MAINSCREEN extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabeltasksaddMouseClicked
 
     private void jTableTasksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTasksMouseClicked
+
+        /**
+         * aqui vamos criar 2 variáveis que atribuem a ela a linha e a
+         * coluna que foi clicado na tela evt é um parametro que o método pede
+         */
         int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
         TASK task = taskModel.getTasks().get(rowIndex);
+        
+        
         switch (columnIndex) {
+
             case 4:
-                taskController.Update(task);
 
-                TaskDialogScreen2 taskDialogScreen = new TaskDialogScreen2(this, rootPaneCheckingEnabled);
+                /**
+                 * coluna 4 para fazer a edição da tarefa
+                 */
+                TaskDialogScreen2 taskDialogScreen2 = new TaskDialogScreen2(this, rootPaneCheckingEnabled);
+                
+                 int projectIndex = jListprojects.getSelectedIndex();
 
-                int taskIndex = jListprojects.getSelectedIndex();
-                PROJECTS projects = (PROJECTS) projectsModel.get(taskIndex);
-                taskDialogScreen.setProject(projects);
+                PROJECTS projects = (PROJECTS) projectsModel.get(projectIndex);
+                
+                taskDialogScreen2.setProject(projects);
+                
+                taskDialogScreen2.setupdateTask(task);
+                taskDialogScreen2.setVisible(true);
 
-                taskDialogScreen.setVisible(true);
-
-                taskDialogScreen.addWindowListener(new WindowAdapter() {
+                taskDialogScreen2.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
-                        LoadTasks(projects.getID());
+                        int projectIndex = jListprojects.getSelectedIndex();
+                        PROJECTS project = (PROJECTS) projectsModel.get(projectIndex);
+                        LoadTasks(project.getID());}
+                        
+                        
 
-                    }
-                });
-                break;
-
-            case 5:
+                    }); 
+                  
+                
+        case 5:
+                /**
+                 * coluna 5 para remover a tarefa 
+                 */
+                
                 taskController.removeByID(task.getID());
                 taskModel.getTasks().remove(task);
 
-                int projectIndex = jListprojects.getSelectedIndex();
-                PROJECTS project = (PROJECTS) projectsModel.get(projectIndex);
+                int projectIndex2 = jListprojects.getSelectedIndex();
+                PROJECTS project = (PROJECTS) projectsModel.get(projectIndex2);
                 LoadTasks(project.getID());
                 break;
 
         }
+        
+        
     }//GEN-LAST:event_jTableTasksMouseClicked
 
     private void jListprojectsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListprojectsMouseClicked
+        
+        /**
+         * criação do evento em que quando clicamos em cada projeto no Jlist
+         * carrega as tarefas baseadas na ID do projeto que clicamos
+         */
         int projectIndex = jListprojects.getSelectedIndex();
+        
+        /**
+         * aqui nesta linha temos que fazer um CAST(conversão de tipo de variável)
+         * nesse caso quando chamamos o método GET, ele vai trazer a informação que
+         * está dentro dos parenteses, no caso (PROJECT).
+         */
         PROJECTS project = (PROJECTS) projectsModel.get(projectIndex);
         LoadTasks(project.getID());
     }//GEN-LAST:event_jListprojectsMouseClicked
@@ -422,6 +494,8 @@ public class MAINSCREEN extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -476,19 +550,31 @@ public class MAINSCREEN extends javax.swing.JFrame {
     private javax.swing.JTable jTableTasks;
     // End of variables declaration//GEN-END:variables
 
+    //Antes de implementar este método ir no Bloco de código de LOOK AND FEEL
+    //  e mudar a palavra "NIMBUS" para "Java swing".
+    /**
+     * Este método serve para mudar a visualização do Header das tarefas
+     */
     public void decorateTableTask() {
+        //mudar fonte 
         jTableTasks.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        //mudar a cor do background para verde
         jTableTasks.getTableHeader().setBackground(new Color(0, 153, 102));
+        //mudar a cor do foreground para branco
         jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
-        //ver se vou ter que mudar o num da coluna
         jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DEADLINECOLUMNCELLRENDERER());
 
         jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new BUTTONCOLUNMCELLRENDERER("pencil"));
         jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new BUTTONCOLUNMCELLRENDERER("close"));
 
-        //jTableTasks.setAutoCreateRowSorter(true);
+        // criando um organizador automático para as tarefas.
+        jTableTasks.setAutoCreateRowSorter(true);
     }
 
+    /**
+     * Criando um método para instanciar as variáveis de controle pois se a
+     * aplicação crescer demais, podemos apenas chamar o método.
+     */
     public void initDataController() {
         projectController = new PROJECTCONTROLLER();
         taskController = new TASKCONTROLLER();
@@ -496,12 +582,25 @@ public class MAINSCREEN extends javax.swing.JFrame {
     }
 
     public void initComponentsModel() {
+        /**
+         * instanciando o objeto DefaultListModel
+         */
         projectsModel = new DefaultListModel();
+
+        /**
+         * chamando o método LoadProjects, para apresentar todos os projetos.
+         */
         LoadProjects();
 
+        /**
+         * instanciando a classe TaskTableModel
+         */
         taskModel = new TASKTABLEMODEL();
+        /**
+         * setando as informações que implememtamos no TasktableModel
+         */
         jTableTasks.setModel(taskModel);
-        LoadTasks(3);
+        //LoadTasks(3);
 
         if (!projectsModel.isEmpty()) {
             jListprojects.setSelectedIndex(0);
@@ -511,13 +610,27 @@ public class MAINSCREEN extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * este método vai carregar as tarefas e jogar elas dentro do tableModel
+     *
+     * @param PROJECT_ID
+     */
     public void LoadTasks(int PROJECT_ID) {
+        /**
+         * criação de lista para pegar todas as tarefas do banco, com base no
+         * Project_id
+         */
         List<TASK> tasks = taskController.getAll(PROJECT_ID);
+        /**
+         * aqui vamos setar as tarefas que estão no taskmodel
+         */
         taskModel.setTasks(tasks);
 
         showJTableTasks(!tasks.isEmpty());
 
     }
+    
+   
 
     private void showJTableTasks(boolean hasTasks) {
 
@@ -546,19 +659,42 @@ public class MAINSCREEN extends javax.swing.JFrame {
 
     }
 
+    /**
+     * método para carregar os projetos do banco de dados.
+     */
     public void LoadProjects() {
+
+        /**
+         * criação da lista para guardar os projetos, já com o método GETALL
+         * para pegar todos os projetos que estão na lista.
+         *
+         */
         List<PROJECTS> Projects = projectController.getall();
 
+        /**
+         * após mostrar todos os projetos que estão na lista, limpamos a
+         * lista.(?)
+         */
         projectsModel.clear();
 
+        /**
+         * aqui vamos carregar os projetos do banco no projectsmodel.
+         */
         for (int i = 0; i < Projects.size(); i++) {
             PROJECTS project = Projects.get(i);
             projectsModel.addElement(project);
 
         }
 
+        /**
+         * aqui vamos pedir ao componente gráfico para exibir as informações que
+         * estão no projectsModel, ou seja, estamos mudando o Model que o Jlist
+         * vai obter as informações (projetos).
+         */
         jListprojects.setModel(projectsModel);
 
     }
+    
+ 
 
 }

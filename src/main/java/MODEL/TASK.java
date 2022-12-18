@@ -6,6 +6,10 @@ import java.util.Date;
 
 public class TASK {
     
+    /**Criação das variáveis com os mesmos nomes que foram usados na tabela do banco de dados
+     * com excessão das variáveis CREATED_AT e UPDATE_AT
+     */
+    
     private int ID;
     private int ID_PROJECT;
     private String NAME;
@@ -15,6 +19,19 @@ public class TASK {
     private Date DEADLINE;
     private Date CREATED_AT;
     private Date UPDATED_AT;
+    
+    /**Criação do método construtor com as variáveis criadas como parametro
+     * 
+     * @param ID
+     * @param PROJECT_ID
+     * @param NAME
+     * @param DESCRIPTION
+     * @param NOTES
+     * @param IS_COMPLETED
+     * @param DEADLINE
+     * @param CREATED_AT
+     * @param UPDATED_AT 
+     */
     
     public TASK(int ID, int PROJECT_ID, String NAME, String DESCRIPTION, String NOTES, boolean IS_COMPLETED, Date DEADLINE, Date CREATED_AT, Date UPDATED_AT ){
     this.ID = ID;
@@ -28,6 +45,9 @@ public class TASK {
     this.ID_PROJECT = ID_PROJECT;
     }
     
+    /**
+     * Método construtor para pegar a data no momento em que ela for inicializada.
+     */
     public TASK(){
         this.CREATED_AT = new Date();
         this.UPDATED_AT = new Date();
@@ -36,7 +56,11 @@ public class TASK {
         
     }
     
-
+    /** Gerar os métodos GETTERS e SETTERS
+     * esses métodos existem para no caso do GET, pegar a informação e 
+     * no caso do SET, setar a informação
+     * @return 
+     */
     public int getID() {
         return ID;
     }
@@ -109,6 +133,12 @@ public class TASK {
         this.UPDATED_AT = UPDATED_AT;
     }
 
+    
+    /** Aqui geramos o método ToString
+     * 
+     * @return 
+     * 
+     */
     @Override
     public String toString() {
         return "TASK{" + "ID=" + ID + ", PROJECT_ID=" + ID_PROJECT + ", NAME=" + NAME + ", DESCRIPTION=" + DESCRIPTION + ", NOTES=" + NOTES + ", IS_COMPLETED=" + IS_COMPLETED + ", DEADLINE=" + DEADLINE + ", CREATED_AT=" + CREATED_AT + ", UPDATED_AT=" + UPDATED_AT + '}';

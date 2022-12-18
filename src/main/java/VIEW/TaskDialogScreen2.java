@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
+
 package VIEW;
 
 import CONTROLLER.TASKCONTROLLER;
@@ -10,21 +7,32 @@ import MODEL.TASK;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
- *
+ *Esta classe faz parte do pacote VIEW, onde temos as classes de interface gráfica.
+ * Essa classe representa a tela para inserir TASKS.
  * @author victo
  */
 public class TaskDialogScreen2 extends javax.swing.JDialog {
+    
+    /**
+     * Criação das variáveis de controle
+     */
 
     TASKCONTROLLER controller;
     PROJECTS project;
+    TASK task;
+    boolean updateTask;
 
     public TaskDialogScreen2(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         HideErrorFiels();
 
+        /**
+         * Instanciando o objeto controller 
+         */
         controller = new TASKCONTROLLER();
     }
 
@@ -200,10 +208,19 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
 
     private void jLabeltoolbarsaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabeltoolbarsaveMouseClicked
 
+        /**
+         * Criação do evento para quando clicar no icone + para adicionar os dados inseridos 
+         * nessa janela
+         */
         try {
-            /* if (!jTextFieldname.getText().isEmpty() && !jFormattedTextFielddeadline.getText().isEmpty())*/
+            if(!updateTask){
+            
             if (isFieldValid()) {
 
+                /**
+                 * Criação do objeto TASK
+                 */
+                     
                 TASK task = new TASK();
 
                 task.setID_PROJECT(project.getID());
@@ -212,9 +229,12 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
                 task.setNOTES(jTextAreanotes.getText());
                 task.setIS_COMPLETED(false);
 
+                //formatando a data que vai ser inserida no campo deadline.
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date DEADLINE = null;
 
+                // Aqui temos que converter essa data que é um valor númerico
+                //para um texto
                 DEADLINE = dateFormat.parse(jFormattedTextFielddeadline.getText());
                 task.setDEADLINE(DEADLINE);
                 controller.Save(task);
@@ -222,7 +242,7 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, "tarefa salva com sucesso");
 
                 this.dispose();
-
+            
             } else {
 
                 HideErrorFiels();
@@ -235,9 +255,48 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
                     jLabeldeadlineerror.setVisible(true);
 
                 }
+                }
+            } if(updateTask){
+                 if (isFieldValid()) {
+                
+                TASK task = new TASK();
 
-                /*JOptionPane.showMessageDialog(rootPane, "A tarefa não foi salva pois existem campos"
-                        + " obrigatórios a serem preenchidos");*/
+                task.setID_PROJECT(project.getID());
+                task.setNAME(jTextFieldname.getText());
+                task.setDESCRIPTION(jTextAreadescription.getText());
+                task.setNOTES(jTextAreanotes.getText());
+                task.setIS_COMPLETED(false);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date DEADLINE = null;
+                DEADLINE = dateFormat.parse(jFormattedTextFielddeadline.getText());
+                task.setDEADLINE(DEADLINE);
+                controller.Save(task);
+
+                JOptionPane.showMessageDialog(rootPane, "tarefa atualizada com sucesso");
+
+                updateTask = false;
+                
+                
+                this.dispose();
+            
+            } else {
+
+                HideErrorFiels();
+
+                if (jTextFieldname.getText().isEmpty()) {
+                    jLabelnameerror.setVisible(true);
+
+                }
+                if (jFormattedTextFielddeadline.getText().isEmpty()) {
+                    jLabeldeadlineerror.setVisible(true);
+
+                }
+                
+                    
+                    }
+
+               
+            
             }
 
         } catch (Exception e) {
@@ -314,6 +373,11 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
     public void setProject(PROJECTS project) {
         this.project = project;
     }
+    
+    public void SetTask( TASK task){
+        this.task = task;
+        
+    }
 
     public void HideErrorFiels() {
 
@@ -321,6 +385,12 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
         jLabelnameerror.setVisible(false);
     }
 
+    /**
+     * Neste método temos que verificar se os campos nome e deadline foram preenchidos
+     * para isso usamos o método isEmpty()
+     * 
+     * @return 
+     */
     public boolean isFieldValid() {
 
         if ((!jTextFieldname.getText().isEmpty()) && (!jFormattedTextFielddeadline.getText().isEmpty())) {
@@ -330,7 +400,27 @@ public class TaskDialogScreen2 extends javax.swing.JDialog {
             return false;
         }
     }
+    
+    /**
+     * nesse método vamos criar uma variável para saber se está sendo feito 
+     * um update na task
+     * @param task 
+     */
+    
+    public void setupdateTask(TASK task){
+        updateTask = true;
+        this.task = task;
         
+       Date DEADLINE = task.getDEADLINE();
+       SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+       
+       jTextFieldname.setText(task.getNAME());
+       jTextAreadescription.setText(task.getDESCRIPTION());
+       jTextAreanotes.setText(task.getNOTES());
+       jFormattedTextFielddeadline.setText(dateFormat.format(DEADLINE));
+      
+      
+    }
   
     
 
